@@ -13,7 +13,6 @@
 #define pb push_back
 #define f first
 #define s second
-#define fast_cin ios_base::sync_with_stdio(false);cin.tie(NULL);
 #define precise fixed(cout);cout<<setprecision(16);
 #define OUT(x) for(auto a:x) cout << a << " "; cout << endl;
 #define OK cout << "@===================ok===================@" <<endl;
@@ -33,17 +32,28 @@ inline void prop(int i){
 }
 
 inline void add(int a, int b, int val, int i=1, int lo=0, int hi=n-1){
-    if(b<lo || a>hi) return;
-    if(a<=lo && hi<=b){
-        laz[i]+=val;//dont process.
+    if(b<lo || a>hi || lo>hi) return;//Interval is disjoint. do nothing
+
+    if(a<=lo && hi<=b){//Interval is enclosed. update lazily
+        laz[i]+=val;
         return;
     }
+
     int m=(lo+hi)/2;
-    prop(i);//push down.
+
+    //Parial covering: push down lazy changes to children.
+
+    prop(i);
+
+    //Find stuff for children.
     add(a,b,val,2*i,lo,m);
     add(a,b,val,2*i+1,m+1,hi);
+
+    //Update node.
     t[i]=t[2*i]+(m-lo+1)*laz[2*i] + t[2*i+1]+(hi-m)*laz[2*i+1];
 }
+
+
 inline ll get(int a, int b, int i=1, int lo=0, int hi=n-1){
     if(b<lo || a>hi) return 0;
     if(a<=lo && hi<=b){
@@ -51,35 +61,32 @@ inline ll get(int a, int b, int i=1, int lo=0, int hi=n-1){
     }
     int m=(lo+hi)/2;
     prop(i);
-    ll lc=0;lc=get(a,b,2*i,lo,m);
-    ll rc=0;rc=get(a,b,2*i+1,m+1,hi);
+    ll ans= get(a,b,2*i,lo,m) + get(a,b,2*i+1,m+1,hi);
     t[i]=t[2*i]+(m-lo+1)*laz[2*i] + t[2*i+1]+(hi-m)*laz[2*i+1];
-    return lc+rc;
+    return ans;
 }
-
 
 int main()
 {
     //Segment Tree RSQ. lightoj problem link: https://vjudge.net/problem/LightOJ-1164
-    int k;
-    fast_cin
-    int T;
-    cin >> T;
+    //fast_cin e mara
+    int T,k;
+    scanf("%d", &T);
     for(int tc=1;tc<=T;tc++)
     {
-        cin >> n >> k;
-        cout << "Case "<<tc<<":\n";
-        mem(t,0);
-        mem(laz,0);
+        scanf("%d%d", &n,&k);
+        printf("Case %d:\n", tc);
+        mem(t,0); mem(laz,0);       								//memset(t,0,sizeof(t));
+
         while(k--){
             int A,B,C,D;
-            cin >> A;
-            if(A==1){
-                cin >> B >> C;
-                cout <<get(B,C)<<"\n";
+            scanf("%d", &A);
+            if(A==1){												//handle rsq
+                scanf("%d%d", &B,&C);
+                printf("%lld\n", get(B,C));
             }
-            else{
-                cin >> B >> C >> D;
+            else if (A==0){											//handle update queries.
+                scanf("%d%d%d", &B,&C,&D);
                 add(B,C,D);
             }
         }
