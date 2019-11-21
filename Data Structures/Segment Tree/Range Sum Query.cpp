@@ -6,7 +6,6 @@
 #define pii pair<int,int>
 #define pll pair<long long, long long>
 #define inf 1000000000000000001
-
 #define all(c) c.begin(),c.end()
 #define mp(x,y) make_pair(x,y)
 #define mem(a,val) memset(a,val,sizeof(a))
@@ -21,97 +20,69 @@
 #define WTF cout <<"< "<<lo<<" | "<< hi <<" >" << endl;
 
 using namespace std;
-const int maxn=200005;
-ll Sum[4*maxn];
+const int maxn=100005;
+
+ll t[4*maxn];
 ll laz[4*maxn];
-ll v[maxn];
 int n;
 
-void init(int i, int a, int b){
-    if(a==b) {
-        Sum[i] = v[a];
-        return;
-    }
-    int m= (a+b)/2;
-    init(2*i, a,m);
-    init(2*i+1, m+1,b);
-    Sum[i]=(Sum[2*i] + Sum[2*i+1]);
-}
-
-void prop(int i){
+inline void prop(int i){
     laz[2*i]+=laz[i];
     laz[2*i+1]+=laz[i];
     laz[i]=0;
 }
 
-void update(int i){
-    Sum[i]=(Sum[2*i]+laz[2*i]+Sum[2*i+1]+laz[2*i+1]);
-}
-
-void add( int a, int b, int val, int i=1, int lo=0, int hi=n-1){
-    if(b<lo || a>hi) return;//
-    if(a<=lo && hi<=b) {
-        laz[i]+=val;
+inline void add(int a, int b, int val, int i=1, int lo=0, int hi=n-1){
+    if(b<lo || a>hi) return;
+    if(a<=lo && hi<=b){
+        laz[i]+=val;//dont process.
         return;
     }
     int m=(lo+hi)/2;
-    //partial.
-    prop(i);
+    prop(i);//push down.
     add(a,b,val,2*i,lo,m);
     add(a,b,val,2*i+1,m+1,hi);
-    update(i);
+    t[i]=t[2*i]+(m-lo+1)*laz[2*i] + t[2*i+1]+(hi-m)*laz[2*i+1];
 }
-
-ll get( int a, int b, int i=1, int lo=0, int hi=n-1){
-    if(b<lo || a>hi) return 0;//
-    if(a<=lo && hi<=b) {
-        return (Sum[i]+laz[i]);
+inline ll get(int a, int b, int i=1, int lo=0, int hi=n-1){
+    if(b<lo || a>hi) return 0;
+    if(a<=lo && hi<=b){
+        return t[i] +(hi-lo+1)*laz[i];
     }
     int m=(lo+hi)/2;
-    //partial.
     prop(i);
-    ll s=(get(a,b,2*i,lo,m)+get(a,b,2*i+1,m+1,hi));
-    update(i);
-    return s;
+    ll lc=0;lc=get(a,b,2*i,lo,m);
+    ll rc=0;rc=get(a,b,2*i+1,m+1,hi);
+    t[i]=t[2*i]+(m-lo+1)*laz[2*i] + t[2*i+1]+(hi-m)*laz[2*i+1];
+    return lc+rc;
 }
+
 
 int main()
 {
-
+    //Segment Tree RSQ. lightoj problem link: https://vjudge.net/problem/LightOJ-1164
+    int k;
+    fast_cin
     int T;
     cin >> T;
-    ll p=0;
-    ll w=0;
     for(int tc=1;tc<=T;tc++)
     {
+        cin >> n >> k;
+        cout << "Case "<<tc<<":\n";
+        mem(t,0);
         mem(laz,0);
-        mem(Sum,0);
-        cin >> n;
-        //SegTree st(n);
-        for(int i=0;i<n;i++) //,st.increment(i,i,v[i]);
-        {
-            cin >> v[i];
-            add(i,i,v[i]);
-        }
-        int q;
-        cin >> q;
-        bool tr=1;
-        while(q--){
-            int l,r;
-            cin >> l >> r;
-            ll ans=get(l,r);
-            ll ex;
-            cin >> ex;
-            if(ex==ans){
-                p++;
+        while(k--){
+            int A,B,C,D;
+            cin >> A;
+            if(A==1){
+                cin >> B >> C;
+                cout <<get(B,C)<<"\n";
             }
             else{
-                w++;
-                tr=0;
+                cin >> B >> C >> D;
+                add(B,C,D);
             }
         }
-        if(tr){
-            //cout <<"Case "<<tc<<" passed.\n";
-        }
+
     }
 }
