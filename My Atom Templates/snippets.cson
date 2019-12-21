@@ -1,0 +1,181 @@
+# Your snippets
+#
+# Atom snippets allow you to enter a simple prefix in the editor and hit tab to
+# expand the prefix into a larger code block with templated values.
+#
+# You can create a new snippet in this file by typing "snip" and then hitting
+# tab.
+#
+# An example CoffeeScript snippet to expand log to console.log:
+#
+# '.source.coffee':
+#   'Console log':
+#     'prefix': 'log'
+#     'body': 'console.log $1'
+#
+# Each scope (e.g. '.source.coffee' above) can only be declared once.
+#
+# This file uses CoffeeScript Object Notation (CSON).
+# If you are unfamiliar with CSON, you can read more about it in the
+# Atom Flight Manual:
+# http://flight-manual.atom.io/using-atom/sections/basic-customization/#_cson
+
+##define sieve memset(prime,true,sizeof(prime));prime[0]=prime[1]=false;for(int i=2;i*i<=MAXN-1;i++){for(int j=i*i;j<MAXN;j+=i) { prime[j] =false;}}
+
+'.source.cpp':
+  'polynomial hash':
+    'prefix': 'hash'
+    'body':"""
+    const int maxsize=$1;
+
+    vll pow1(maxsize);          //for the love of god dont forget to call genpow();
+    vll pow2(maxsize);
+
+    const int mod1=1e9+7;
+    const int mod2=1e9+9;
+
+    const int base=37;
+    const int base2=137;
+
+    class Hashing{
+        vll pref1;
+        vll pref2;
+    public:
+        Hashing(string &s)  //this is ok.
+        {
+            int n=s.size();
+            pref1.resize(n+1);
+            pref2.resize(n+1);
+            for(int i=0;i<n;i++)
+            {
+                pref1[i+1] = (pref1[i] + 1LL *  (s[i]-'a'+1) * pow1[i] ) %mod1;
+                pref2[i+1] = (pref2[i] + 1LL *  (s[i]-'a'+1) * pow2[i] ) %mod2;
+            }
+        }
+
+        inline pll operator()(const int pos, const int len) //note to self: this is ok. i verified it and wrote each line.
+        {
+            ll hash1 = pref1[pos+len] - pref1[pos];
+            ll hash2 = pref2[pos+len] - pref2[pos];
+
+            while(hash1<0) hash1+=mod1;
+            while(hash2<0) hash2+=mod2;
+
+            hash1 = 1LL * hash1 * pow1[maxsize -1- (pos+len-1)] % mod1;
+            hash2 = 1LL * hash2 * pow2[maxsize -1- (pos+len-1)] % mod2;
+            return mp(hash1,hash2);
+        }
+
+    };
+
+    void genpow()   //this is ok.
+    {
+        pow1[0]=pow2[0]=1;
+        for(int i=1;i<maxsize;i++){
+            pow1[i]=pow1[i-1]*base % mod1;
+            pow2[i]=pow2[i-1]*base2 % mod2;
+        }
+    }
+
+    """
+  'cpp template':
+    'prefix': 'cf'
+    'body':"""
+    #include <bits/stdc++.h>
+    #define ll long long int
+    #define vi vector<int>
+    #define vll vector<ll>
+    #define vvi vector < vi >
+    #define pii pair<int,int>
+    #define pll pair<long long, long long>
+    #define inf 1000000000000000001
+    #define mod 1000000007
+    #define all(c) c.begin(),c.end()
+    #define mp(x,y) make_pair(x,y)
+    #define mem(a,val) memset(a,val,sizeof(a))
+    #define eb emplace_back
+    #define pb push_back
+    #define f first
+    #define s second
+    #define fast_cin ios_base::sync_with_stdio(false);cin.tie(NULL);
+    #define precise fixed(cout);cout<<setprecision(16);
+    #define Set(N,p) N=((N)|((1LL)<<(p)))
+    #define Reset(N,p) N=((N)&(~((1LL)<<(p))))
+    #define Check(N,p) (!(((N)&((1LL)<<(p)))==(0)))
+    #define POPCOUNT __builtin_popcountll
+    #define RIGHTMOST __builtin_ctzll
+    #define LEFTMOST(x) (63-__builtin_clzll((x)))
+    #define NUMDIGIT(x,y) (((vlong)(log10((x))/log10((y))))+1)
+    #define OUT(x) for(auto a:x) cout << a << " "; cout << endl;
+    #define OK cout << "@===================ok===================@" <<endl;
+    #define WTF cout <<"< "<<lo<<" | "<< hi <<" >" << endl;
+
+    using namespace std;
+
+    int main()
+    {
+        $1
+    }
+
+    """
+
+  'testcases':
+   'prefix': 'tc'
+   'body': """
+    int T;
+    cin >> T;
+    for(int tc=1;tc<=T;tc++)
+    {
+      $1
+      cout << "Case "<<tc<<": "<<endl;
+    }
+    """
+  'prime sieve':
+    'prefix': 'sieve'
+    'body': """
+     memset(prime,true,sizeof(prime));
+     const int MAXN=$1;
+     prime[0]=prime[1]=false;
+     for(int i=2; i*i <= $1 ; i++) for(int j = i*i; j < $1 ; j += i)
+       prime[j] =false;
+     """
+   'Nested loop for printing 2-D Matrix':
+    'prefix': 'print 2d'
+    'body': """
+     for(int i=0;i<n;i++)
+     {
+        for(int j=0;j<m;j++)
+          cout << dp[i][j]$1
+
+        cout<<endl;
+     }
+     """
+  'for loop':
+   'prefix': 'fori'
+   'body': """
+    for(int i =0; i <$1; i++)
+      $2
+    """
+  'for loop 2':
+   'prefix': 'forj'
+   'body': """
+    for(int j =0; j <$1; j++)
+      $2
+    """
+
+  'vector input':
+   'prefix': 'vinput'
+   'body': """
+    int n;
+    cin >> n;
+    vi v(n);
+    for(int i=0;i<n;i++) cin >> v[i];
+    $1
+    """
+
+  'file input':
+   'prefix': 'freopen'
+   'body': """
+    freopen("in.txt","r",stdin);
+    freopen("out.txt","w",stdout);$1
+    """
