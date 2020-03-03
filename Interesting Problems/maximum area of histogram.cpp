@@ -46,6 +46,9 @@ int main()
         }
         else{
             //if lower, while the top of stack is more than current element, keep popping.
+            //when we do pop, we check answer and update maximum.
+            //since we store the indices in stack, we can retrieve the width (len.) wrt the v[top of stack].
+            //if stack is empty len is i-1 because all greater lenths have been popped from the stack.
             cout << '\t'<< "{ "<<v[s.top()] <<" , len: "<<i-s.top()<< "}"<< endl;
             res=max(res,(s.empty()?i-1:1LL*v[s.top()]*(i-s.top())));
             s.pop();
