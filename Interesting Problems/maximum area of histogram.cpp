@@ -48,17 +48,20 @@ int main()
             //if lower, while the top of stack is more than current element, keep popping.
             //when we do pop, we check answer and update maximum.
             //since we store the indices in stack, we can retrieve the width (len.) wrt the v[top of stack].
-            //if stack is empty len is i-1 because all greater lenths have been popped from the stack.
-            cout << '\t'<< "{ "<<v[s.top()] <<" , len: "<<i-s.top()<< "}"<< endl;
-            res=max(res,(s.empty()?i-1:1LL*v[s.top()]*(i-s.top())));
+            // If this bar is lower than top of stack,  
+            // then calculate area of rectangle with stack  
+            // top as the smallest (or minimum height) bar.  
+            // 'i' is 'right index' for the top and element  
+            // before top in stack is 'left index' 
+            ll tp=s.top();
             s.pop();
+            res=max(res,1LL*v[tp]*(s.empty()?i:i-s.top()-1));
         }
     }
-    cout << endl;
     while(!s.empty()){
-        cout << '\t'<< "{ "<<v[s.top()] <<" , len: "<<i-s.top()<< "}"<< endl;
-        res=max(res,(s.empty()?i-1:1LL*v[s.top()]*(i-s.top())));
+        ll tp=s.top();
         s.pop();
+        res=max(res,1LL*v[tp]*(s.empty()?i:i-s.top()-1));
     }
     cout << res << endl;
 }
