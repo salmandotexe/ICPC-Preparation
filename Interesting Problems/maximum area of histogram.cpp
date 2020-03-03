@@ -40,19 +40,16 @@ int main()
     int i=0;
 
     ll res=0;
+    //stack contains increasing order of heights.
     while(i<n){
-        if(s.empty() || v[s.top()]<=v[i]){  //if higher, push in stack.
+        if(s.empty() || v[s.top()]<=v[i]){  //if v[i] higher, push in stack.
             s.push(i++);
         }
         else{
-            //if lower, while the top of stack is more than current element, keep popping.
-            //when we do pop, we check answer and update maximum.
-            //since we store the indices in stack, we can retrieve the width (len.) wrt the v[top of stack].
-            // If this bar is lower than top of stack,  
-            // then calculate area of rectangle with stack  
-            // top as the smallest (or minimum height) bar.  
-            // 'i' is 'right index' for the top and element  
-            // before top in stack is 'left index' 
+            //if current height v[i] is lower, 
+            // while elements in stack are greater, find the area of rectangle with height= v[stack top].
+            // (note that i is not incremented, while loop runs until s.empty() or top of stack<=v[i])
+            // right side is i. left side is s.top() after popping.
             ll tp=s.top();
             s.pop();
             res=max(res,1LL*v[tp]*(s.empty()?i:i-s.top()-1));
