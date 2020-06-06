@@ -4,7 +4,7 @@ But
 
 
 Also,       a%b       =       na + r1
-But         a%b       =       a  -  nb.
+But         a%b       =       a  -  xb.   x=floor(a/b)
 
 
 
