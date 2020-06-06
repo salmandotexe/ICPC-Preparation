@@ -1,0 +1,40 @@
+(x mod a) mod b is not always (x mod b) mod a. 25,3,7.
+But
+(xmoda) mod(ba) = (xmod(ba))moda = xmoda.     [1]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1]: https://codeforces.com/blog/entry/78116 E
