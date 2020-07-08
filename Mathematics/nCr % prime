@@ -1,0 +1,91 @@
+#include <bits/stdc++.h>
+#define ll long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vvi vector < vi >
+#define pii pair<int,int>
+#define pll pair<long long, long long>
+#define inf 1000000000000000001
+#define mod 999999937
+#define all(c) c.begin(),c.end()
+#define mp(x,y) make_pair(x,y)
+#define mem(a,val) memset(a,val,sizeof(a))
+#define eb emplace_back
+#define pb push_back
+#define f first
+#define s second
+#define fast_cin ios_base::sync_with_stdio(false);cin.tie(NULL);
+#define precise fixed(cout);cout<<setprecision(16);
+#define Set(N,p) N=((N)|((1LL)<<(p)))
+#define Reset(N,p) N=((N)&(~((1LL)<<(p))))
+#define Check(N,p) (!(((N)&((1LL)<<(p)))==(0)))
+#define POPCOUNT __builtin_popcountll
+#define RIGHTMOST __builtin_ctzll
+#define LEFTMOST(x) (63-__builtin_clzll((x)))
+#define NUMDIGIT(x,y) (((vlong)(log10((x))/log10((y))))+1)
+#define OUT(x) for(auto a:x) cout << a << " "; cout << endl;
+#define OK cout << "@===================ok===================@" <<endl;
+#define WTF cout <<"< "<<lo<<" | "<< hi <<" >" << endl;
+
+using namespace std;
+
+const int maxn=1e6+5;
+ll v[maxn];
+ll fac[maxn];
+void prec(){
+    fac[0]=1;
+    for(int i=1;i<maxn;i++){
+        fac[i]=(1LL*i*fac[i-1])%mod;
+    }
+}
+
+ll power(ll a, ll b) {
+	if(b==0) return 1%mod;
+	if(b==1) return a%mod;
+	if(b&1)
+		return (power(a,b-1)*a)%mod;
+	ll q = power(a,b/2);
+	return (q*q)%mod;
+}
+
+ll ncr(int n, int r){
+    if(n<0 || r<0 || r>n) return 0;
+    ll ff=fac[n];
+    ll den=power(fac[r],mod-2);
+    ff*=den; ff%=mod;
+    den=power(fac[n-r],mod-2);
+    ff*=den; ff%=mod;
+    return ff;
+}
+
+int main()
+{
+    prec();
+    fast_cin;
+    int T;
+    cin >> T;
+    for(int tc=1;tc<=T;tc++)
+    {
+        ll n;
+        cin >> n;
+        ll S=0;
+        for(int i=0;i<n;i++) {
+            cin >> v[i];
+            S+=v[i];
+        }
+        S%=mod;
+        if(S<0) S+=mod;
+
+        ll res=0;
+        for(ll i=1;i<=n;i++){
+            if(n%i==0){
+                ll cur=S*ncr(n-1,i-1);
+                cur%=mod;
+                res+=cur;
+                res%=mod;
+            }
+        }
+        cout << res <<"\n";
+
+    }
+}
