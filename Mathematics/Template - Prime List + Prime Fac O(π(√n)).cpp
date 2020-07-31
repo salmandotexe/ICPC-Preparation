@@ -37,7 +37,7 @@ vll P;      //stores Primes upto [0...maxn).
 
 void prec(){
     mem(prime,1);
-    prime[0]=prime[1]=1;
+    prime[0]=prime[1]=0;
     for(int i=4;i<maxn;i+=2) prime[i] = 0;
 
     P.pb(2);
