@@ -17,9 +17,9 @@ void prec(){
     P.pb(2);
     for(int i=4;i<maxn;i+=2) prime[i]=0;
 
-    for(int i=3;i*i<maxn;i+=2){
+    for(int i=3;i<maxn;i+=2){
         if(prime[i]){
-            for(int j=i*i;j<maxn;j+=i) prime[j]=0;
+            for(int j=i+i;j<maxn;j+=i) prime[j]=0;
         }
     }
     for(int i=3;i<maxn;i+=2) if(prime[i]) P.pb(i);
