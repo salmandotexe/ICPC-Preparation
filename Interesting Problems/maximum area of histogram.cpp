@@ -63,7 +63,7 @@ int main()
     cout << res << endl;
 }
 /*
-https://www.youtube.com/watch?v=zx5Sw9130L0&feature=emb_logo
+    MUCH EASIER:
 using namespace std;
 
 int main()
@@ -75,31 +75,28 @@ int main()
     {
         int n;
         cin >> n;
-        vi v(n);
+        vll v(n);
         for(int i=0;i<n;i++) cin >> v[i];
-        stack<pll> s;   //index, height
-        int i=0;
-        int last=0;
+
+        stack<pll> s;   //stores <index of start of rectangle, height of rectangle>
         ll mx=0;
         for(int i=0;i<n;i++){
-            int start=i;
-            while(!s.empty() && s.top().s>v[i]){
-                //pop, check max rect, extend current height backward.
-                auto temp = s.top(); s.pop();   //pop
-                mx=max(mx, temp.s*(i-temp.f));  //check max rect
-                start=temp.f;                //extend current height backward.
+            int L=i;
+            
+            while(!s.empty() && s.top().s>= v[i]){  //case 2: pop from stack until we can extend v[i] to the left.
+            
+                mx=max(mx,s.top().s*(i-s.top().f)); //check rect area for elements in stack because we can extend it to the right. length = i- s.top.index
+                L=s.top().f;                        //we can extend v[i] to the left. update L
+                s.pop();
             }
-            s.push({start,v[i]});
+            s.push({L,v[i]});                       //case 1: we can't extend v[i] to the left. .: .|:
         }
         while(!s.empty()){
-            int len=n-s.top().f;
-            mx=max(mx,s.top().s*len);
+            mx=max(mx,s.top().s*(n-s.top().f));
             s.pop();
         }
-        cout <<"Case "<<tc<<": "<< mx <<"\n";
+        cout << "Case "<<tc<<": "<<mx <<"\n";
     }
 }
-
-
 
 */
