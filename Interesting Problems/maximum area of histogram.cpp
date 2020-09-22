@@ -62,3 +62,44 @@ int main()
     }
     cout << res << endl;
 }
+/*
+https://www.youtube.com/watch?v=zx5Sw9130L0&feature=emb_logo
+using namespace std;
+
+int main()
+{
+    fast_cin;
+    int T;
+    cin >> T;
+    for(int tc=1;tc<=T;tc++)
+    {
+        int n;
+        cin >> n;
+        vi v(n);
+        for(int i=0;i<n;i++) cin >> v[i];
+        stack<pll> s;   //index, height
+        int i=0;
+        int last=0;
+        ll mx=0;
+        for(int i=0;i<n;i++){
+            int start=i;
+            while(!s.empty() && s.top().s>v[i]){
+                //pop, check max rect, extend current height backward.
+                auto temp = s.top(); s.pop();   //pop
+                mx=max(mx, temp.s*(i-temp.f));  //check max rect
+                start=temp.f;                //extend current height backward.
+            }
+            s.push({start,v[i]});
+        }
+        while(!s.empty()){
+            int len=n-s.top().f;
+            mx=max(mx,s.top().s*len);
+            s.pop();
+        }
+        cout <<"Case "<<tc<<": "<< mx <<"\n";
+    }
+}
+
+
+
+*/
