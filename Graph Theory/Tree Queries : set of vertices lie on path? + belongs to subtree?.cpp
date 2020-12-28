@@ -64,6 +64,7 @@ void dfs(int src, int p=-1, int dep=0){
 	}
 	t_out[src]-t_in[src] + 1 gives us the size of subtree src directly in this variation. 
 	and the ancestor theorem also holds (u is an ancestor of v iff t_in[v]<=t_in[u]<=t_out[u]<=t_in[v] )
+	it also requires maxn instead of 2*maxn size of st,en.
 */
 bool ancestor(int v, int u){
 	return t_in[v] <= t_in[u] && t_out[u] <= t_out[v];
