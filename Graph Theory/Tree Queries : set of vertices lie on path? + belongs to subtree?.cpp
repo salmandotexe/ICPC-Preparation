@@ -67,8 +67,6 @@ void dfs(int src, int p=-1, int dep=0){
 	and the ancestor theorem also holds (u is an ancestor of v iff t_in[v]<=t_in[u]<=t_out[u]<=t_in[v] )
 	it also requires maxn instead of 2*maxn size of st,en.
 	
-	Edit 2: It turns out that the previous version of time actually gives us indices for Euler Tour Tree and is very useful.
-	i.e: Flattening the tree into an array to support operations with Segtree/Mergesort tree/Sqrt/ etc.
 */
 bool ancestor(int v, int u){
 	return t_in[v] <= t_in[u] && t_out[u] <= t_out[v];
