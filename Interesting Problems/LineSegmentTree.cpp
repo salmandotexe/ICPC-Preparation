@@ -1,3 +1,4 @@
+//https://vjudge.net/problem/Gym-101630A
 #include <bits/stdc++.h>
 #define ll long long int
 #define vi vector<int>
