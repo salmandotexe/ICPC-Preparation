@@ -1,0 +1,14 @@
+/*
+    Graphs
+*/
+// FloydWarshall: All pair Shortest paths in O(1), O(n^3) preprocessing
+
+set G[i][j] to infinity for all i,j
+for(int i=1;i<=n;i++) G[i][i]=0;
+for each edge (a,b) G[a][b]=1 //if undirected G[b][a]=1.
+
+for(int k=0;k<n;k++)
+for(int i=0;i<n;i++)
+for(int j=0;j<n;j++)
+    if (G[i][j]>G[i][k]+G[k][j])
+        G[i][j]=G[i][k]+G[k][j];
