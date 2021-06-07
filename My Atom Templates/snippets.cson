@@ -179,3 +179,17 @@
     freopen("in.txt","r",stdin);
     freopen("out.txt","w",stdout);$1
     """
+
+  'gnu pbds':
+   'prefix': 'pbds'
+   'body': """
+    #include <ext/pb_ds/assoc_container.hpp> // Common file
+    #include <ext/pb_ds/tree_policy.hpp> // Including tree_order_statistics_node_update
+    #include <ext/pb_ds/detail/standard_policies.hpp>
+
+    using namespace __gnu_pbds;
+
+    typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
+    //note that if you use less_equal<int> you get a multiset but as a consequence lower_bound works as upper_bound and vice-versa. source: https://codeforces.com/blog/entry/11080?#comment-533322
+
+    """
