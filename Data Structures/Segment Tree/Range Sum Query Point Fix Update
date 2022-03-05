@@ -41,7 +41,7 @@ inline ll get(int a, int b, int i=1, int lo=0, int hi=n-1){
     int mid=(lo+hi)/2;
     ll t1=get(a,b,2*i,lo,mid);
     ll t2=get(a,b,2*i+1,mid+1,hi);
-    t[i]=t[2*i]+t[2*i+1];
+    //t[i]=t[2*i]+t[2*i+1];
     return t1+t2;
 }
 
