@@ -29,6 +29,8 @@
 
 using namespace std;
 
+// https://codeforces.com/contest/1649/problem/C
+
 int main()
 {
     freopen("in.txt","r",stdin);
@@ -68,4 +70,5 @@ int main()
               
               S = (n*w1 + (n-1)w2 + ... 1*wn) - (1*w1 + 2*w2 + ... n*wn)
     */
+    
 }
