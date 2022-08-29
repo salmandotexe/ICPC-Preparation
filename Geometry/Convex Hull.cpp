@@ -1,3 +1,4 @@
+//https://vjudge.net/problem/Kattis-dysoncircle
 #include <bits/stdc++.h>
 #define ll long long int
 #define vi vector<int>
@@ -5,7 +6,6 @@
 #define vvi vector < vi >
 #define pii pair<int,int>
 #define pll pair<long long, long long>
-#define inf 1000000000000000001
 #define mod 1000000007
 #define all(c) c.begin(),c.end()
 #define mp(x,y) make_pair(x,y)
@@ -26,69 +26,99 @@
 #define OUT(x) for(auto a:x) cout << a << " "; cout << endl;
 #define OK cout << "@===================ok===================@" <<endl;
 #define WTF cout <<"< "<<lo<<" | "<< hi <<" >" << endl;
-
+#define double long double
 using namespace std;
-
-//  Convex Hull - Returns vector of points belonging to hull in anti-clockwise order.
-typedef complex<double> point;
-#define x real()
-#define y imag()
-double dot(point a,point b){ return (conj(a)*b).x ; }
-double cross(point a,point b){ return (conj(a)*b).y ; }
-double dist(point a, point b){ return abs(a-b); }			//distance btw points a and b
-double dist(point a, point b, point c, bool issegment = false){		//distance btw line ab and point c
-	double d = cross(b-a,c-a)/dist(a,b) ;
-	if( issegment == true )						// if line is a segment, issegment is true
-	{
-		double dt1 = dot(b-a,c-b) ;
-		if( dt1 > 0 )  return dist(b,c);
-		double dt2 = dot(a-b,c-a) ;
-		if( dt2 > 0 )  return dist(a,c);
-	}
-	return abs(d) ;
-}
-template<class T>
-istream& operator>> (istream& is, complex<T>& p){
-   T value;
-   is >> value;
-   p.real(value);
-   is >> value;
-   p.imag(value);
-   return is;
-}
-bool cmp(point& a, point& b)
-{
-	if ( a.x == b.x )
-	{
-		return a.y < b.y ;
-	}
-	else
-	{
-		return a.x < b.x ;
-	}
-}
-vector<point> hull(vector<point> P)
-{
-   int n = P.size() ;
-   int k = 0;
-   vector<point> H(2*n) ;
-   sort( all(P), cmp );
-   for (int  i = 0;  i < n;  i++) {			// lower monotone chain
-		while( k>=2 && cross( H[k-1]-H[k-2], P[i]-H[k-2] ) <= 0)
-				k--;
-		H[k++] = P[i] ;
-   }
-   for (int  i = n-2, t=k+1;  i >= 0;  i--) {		// upper monotone chain
-		while( k>=t && cross( H[k-1]-H[k-2], P[i]-H[k-2] ) <= 0)
-				k--;
-		H[k++] = P[i];
-   }
-   H.resize(k-1);
-   return H;
+const int N = 2e5 + 9;
+const double inf = 1e100;
+const double eps = 1e-9;
+const double PI = acos((double)-1.0);
+int sign(double x) { return (x > eps) - (x < -eps); }
+struct PT {
+    double x, y;
+    PT() { x = 0, y = 0; }
+    PT(double x, double y) : x(x), y(y) {}
+    PT(const PT &p) : x(p.x), y(p.y)    {}
+    PT operator + (const PT &a) const { return PT(x + a.x, y + a.y); }
+    PT operator - (const PT &a) const { return PT(x - a.x, y - a.y); }
+    PT operator * (const double a) const { return PT(x * a, y * a); }
+    friend PT operator * (const double &a, const PT &b) { return PT(a * b.x, a * b.y); }
+    PT operator / (const double a) const { return PT(x / a, y / a); }
+    bool operator==(PT a) const { return sign(a.x - x) == 0 && sign(a.y - y) == 0; }
+    bool operator!= (PT a) const { return !(*this == a); }
+    bool operator< (PT a) const { return sign(a.x - x) == 0 ? y < a.y : x < a.x; }
+    bool operator> (PT a) const { return sign(a.x - x) == 0 ? y > a.y : x > a.x; }
+    double norm() { return sqrt(x * x + y * y); }
+    double norm2() { return x * x + y * y; }
+    PT perp() { return PT(-y, x); }
+    double arg() { return atan2(y, x); }
+    PT truncate(double r) { // returns a vector with norm r and having same direction
+        double k = norm();
+        if (!sign(k)) return *this;
+        r /= k;
+        return PT(x * r, y * r);
+    }
+};
+inline double dot(PT a, PT b) { return a.x * b.x + a.y * b.y; }
+inline double dist2(PT a, PT b) { return dot(a - b, a - b); }
+inline double dist(PT a, PT b) { return sqrt(dot(a - b, a - b)); }
+inline double cross(PT a, PT b) { return a.x * b.y - a.y * b.x; }
+inline double cross2(PT a, PT b, PT c) { return cross(b - a, c - a); }
+inline int orientation(PT a, PT b, PT c) { return sign(cross(b - a, c - a)); }
+vector<PT> convex_hull(vector<PT> &p) {
+	if (p.size() <= 1) return p;
+	vector<PT> v = p;
+    sort(v.begin(), v.end());
+    vector<PT> up, dn;
+    for (auto& p : v) {
+        while (up.size() > 1 && orientation(up[up.size() - 2], up.back(), p) >= 0) {
+            up.pop_back();
+        }
+        while (dn.size() > 1 && orientation(dn[dn.size() - 2], dn.back(), p) <= 0) {
+            dn.pop_back();
+        }
+        up.push_back(p);
+        dn.push_back(p);
+    }
+    v = dn;
+    if (v.size() > 1) v.pop_back();
+    reverse(up.begin(), up.end());
+    up.pop_back();
+    for (auto& p : up) {
+        v.push_back(p);
+    }
+    if (v.size() == 2 && v[0] == v[1]) v.pop_back();
+    return v;
 }
 
 int main()
 {
+    fast_cin;
+    int n;
+    cin >> n;
+    vector<PT> v(n);
+    for(int i=0;i<n;i++){
+        cin >> v[i].x >> v[i].y;
+    }
+    auto hull = convex_hull(v);
+    int h = hull.size();
+    hull.push_back(hull[0]);
+    double res = 0;
+    for(int i=0;i+1<hull.size();i++){
+        auto& F = hull[i];
+        auto& S = hull[i+1];
+        res+= (max(abs(S.x - F.x) + eps,  abs(S.y- F.y)+ eps));
+    }
 
+    ll ans = floor(res) + 4;
+
+    if(h==2){
+        auto& F = hull[0];
+        auto& S = hull[1];
+        if(abs(abs(S.x - F.x) - abs(S.y- F.y)) < eps){
+            ans += 1;
+        }
+    }
+
+    cout << ans <<"\n";
 
 }
